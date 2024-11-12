@@ -20,7 +20,7 @@ class OnboardingPage2 extends StatelessWidget {
                 const Center(
                   child: CircleAvatar(
                     radius: 180,
-                    backgroundImage: AssetImage("assets/images/handyman6.png"),
+                    backgroundImage: AssetImage("assets/images/Electrician-bro.png"),
                     backgroundColor: Colors.transparent,
                   ),
                 ),
