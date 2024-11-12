@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "D:/Data/UoR/sem_05/EE5261-Mobile-Application-Development/local_service_provider_app/linux"
+    "cmake.sourceDirectory": "D:/Data/UoR/sem_05/EE5261-Mobile-Application-Development/local_service_provider_app/linux",
+    "java.compile.nullAnalysis.mode": "automatic"
 }
