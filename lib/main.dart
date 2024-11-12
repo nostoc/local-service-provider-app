@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:local_service_provider_app/pages/home_page.dart';
-import 'package:local_service_provider_app/pages/onboarding_page_2.dart';
-import 'package:local_service_provider_app/pages/onboarding_page_3.dart';
+import 'package:local_service_provider_app/screens/onboarding_screen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Outfit",),
       
-      home: const HomePage(),
+      home: const OnboardingScreen(),
     );
   }
 }

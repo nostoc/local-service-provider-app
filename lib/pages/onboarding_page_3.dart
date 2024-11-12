@@ -21,7 +21,7 @@ class OnboardingPage3 extends StatelessWidget {
                   child: CircleAvatar(
                     backgroundColor: Colors.transparent,
                     radius: 180,
-                    backgroundImage: AssetImage("assets/images/handyman4.png"),
+                    backgroundImage: AssetImage("assets/images/Electrician-amico.png"),
                   ),
                 ),
                 const SizedBox(

@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
                 const Center(
                   child: CircleAvatar(
                     radius: 180,
-                    backgroundImage: AssetImage("assets/images/handyman3.png"),
+                    backgroundImage: AssetImage("assets/images/rb_2781.png"),
                     backgroundColor: Colors.transparent,
                   ),
                 ),
