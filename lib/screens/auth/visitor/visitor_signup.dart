@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:local_service_provider_app/screens/auth/visitor/visitor_signin.dart';
 import 'package:local_service_provider_app/screens/home/home_screen.dart';
-import 'package:local_service_provider_app/screens/services/auth_service.dart';
+import 'package:local_service_provider_app/services/auth_service.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
 
 class VisitorSignupScreen extends StatefulWidget {
@@ -254,8 +254,7 @@ class _VisitorSignupScreenState extends State<VisitorSignupScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      const VisitorSignInScreen(),
+                                  builder: (context) => const VisitorSignin(),
                                 ),
                               );
                             },
