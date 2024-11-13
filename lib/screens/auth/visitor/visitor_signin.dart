@@ -16,7 +16,6 @@ class VisitorSignin extends StatefulWidget {
 class _VisitorSigninState extends State<VisitorSignin> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
 
   final _formKey = GlobalKey<FormState>();
 
@@ -50,8 +49,7 @@ class _VisitorSigninState extends State<VisitorSignin> {
 
       if (e is FirebaseAuthException) {
         // Handle FirebaseAuthException separately
-        errorMessage =
-            mapFirebaseAuthExceptionCode(e.code);
+        errorMessage = mapFirebaseAuthExceptionCode(e.code);
       } else {
         // Handle any other exceptions
         errorMessage = 'An unexpected error occurred.';
@@ -96,7 +94,7 @@ class _VisitorSigninState extends State<VisitorSignin> {
                 ),
                 const SizedBox(height: 5),
                 const Text(
-                  "Sign Up",
+                  "Sign In",
                   style: TextStyle(
                     fontSize: 35,
                     fontWeight: FontWeight.w900,
