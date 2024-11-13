@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:local_service_provider_app/data/onboarding_data.dart';
-import 'package:local_service_provider_app/screens/handyman_signup.dart';
+import 'package:local_service_provider_app/screens/auth/handyman/handyman_signup.dart';
+import 'package:local_service_provider_app/screens/auth/visitor/visitor_signup.dart';
+
 import 'package:local_service_provider_app/screens/onboarding/shared_onboarding_screen.dart';
 import 'package:local_service_provider_app/screens/onboarding/splash_screen.dart';
-import 'package:local_service_provider_app/screens/visitor_signup.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
 import 'package:local_service_provider_app/widgets/custom_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
