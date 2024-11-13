@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:local_service_provider_app/exceptions/auth_exceptions.dart';
 import 'package:local_service_provider_app/screens/auth/visitor/visitor_signup.dart';
+import 'package:local_service_provider_app/screens/home/home_screen.dart';
+import 'package:local_service_provider_app/screens/services/auth_service.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
 
 class VisitorSignInScreen extends StatefulWidget {
@@ -14,6 +18,70 @@ class _VisitorSignInScreenState extends State<VisitorSignInScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  bool _isLoading = false;
+
+  //sign in visitor
+// Sign in with email and password
+ Future<void> _signInUser() async {
+    if (!_formKey.currentState!.validate()) {
+      return; // Form validation failed, do not proceed
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final email = _emailController.text.trim();
+      final password = _passwordController.text.trim();
+
+      // Attempt to sign in with email and password
+      await AuthService().signInVisitor(email: email, password: password);
+
+      // Check if the widget is still mounted before navigating
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
+      }
+    } catch (e) {
+      String errorMessage;
+      if (e is FirebaseAuthException) {
+        // Handle FirebaseAuthException separately
+        errorMessage = mapFirebaseAuthExceptionCode(e.code);
+      } else {
+        // Handle any other exceptions
+        errorMessage = 'An unexpected error occurred: $e';
+      }
+
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Error'),
+            content: Text('Error signing in: $errorMessage'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,32 +184,30 @@ class _VisitorSignInScreenState extends State<VisitorSignInScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                   ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  WidgetStateProperty.all(mainTextColor),
-                              minimumSize: const WidgetStatePropertyAll(
-                                Size.fromHeight(50),
-                              ), // Fixed the property name here
-                            ),
-                            child: const Text(
-                              "Sign In",
-                              style: TextStyle(
-                                color: whiteColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25,
+                    _isLoading
+                        ? const CircularProgressIndicator()
+                        : SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: mainTextColor,
+                                minimumSize: const Size.fromHeight(50),
                               ),
+                              onPressed: _signInUser,
+                              child:const Text(
+                                      "Sign In",
+                                      style: TextStyle(
+                                        color: whiteColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                      ),
+                                    ),
                             ),
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                // Perform sign up logic here
-                              }
-                            },
                           ),
                     const SizedBox(
                       height: 20,
                     ),
-                     Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
