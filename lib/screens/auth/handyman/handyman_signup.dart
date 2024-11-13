@@ -10,10 +10,6 @@ class HandymanSignupScreen extends StatefulWidget {
 class _HandymanSignupScreenState extends State<HandymanSignupScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Hnady Man Signup"),
-      ),
-    );
+    return const Placeholder();
   }
 }

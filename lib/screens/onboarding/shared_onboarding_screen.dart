@@ -43,8 +43,8 @@ class SharedOnboardingScreen extends StatelessWidget {
               description,
               style: const TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.w400,
-                color: mainTextColor,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF434344),
               ),textAlign: TextAlign.center,
             ),
           ),
