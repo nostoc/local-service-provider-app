@@ -16,23 +16,27 @@ class SharedOnboardingScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 100,
+          ),
           Image.asset(
             imageUrl,
             width: double.infinity,
             fit: BoxFit.cover,
           ),
           const SizedBox(
-            height: 20,
+            height: 50,
           ),
           Text(
             title,
             style: const TextStyle(
               fontSize: 30,
-              fontWeight: FontWeight.w900,
+              fontWeight: FontWeight.w600,
               color: mainTextColor,
-            ),textAlign: TextAlign.center,
+            ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(
             height: 10,
@@ -43,9 +47,10 @@ class SharedOnboardingScreen extends StatelessWidget {
               description,
               style: const TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w500,
                 color: Color(0xFF434344),
-              ),textAlign: TextAlign.center,
+              ),
+              textAlign: TextAlign.center,
             ),
           ),
         ],

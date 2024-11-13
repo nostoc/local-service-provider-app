@@ -97,8 +97,8 @@ class _VisitorSigninState extends State<VisitorSignin> {
                 const Text(
                   "Sign In",
                   style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w900,
+                    fontSize: 40,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -188,8 +188,8 @@ class _VisitorSigninState extends State<VisitorSignin> {
                                   "Sign In",
                                   style: TextStyle(
                                     color: whiteColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 22,
                                   ),
                                 ),
                               ),

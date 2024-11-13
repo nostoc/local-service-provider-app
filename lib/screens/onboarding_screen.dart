@@ -62,7 +62,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                 //page indicator
                 Container(
-                  alignment: const Alignment(0, 0.66),
+                  alignment: const Alignment(0, 0.6),
                   child: SmoothPageIndicator(
                     controller: _controller,
                     count: 4,
@@ -75,7 +75,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 //navigation buttons
 
                 Positioned(
-                  bottom: 15,
+                  bottom: 25,
                   left: 0,
                   right: 0,
                   child: Padding(

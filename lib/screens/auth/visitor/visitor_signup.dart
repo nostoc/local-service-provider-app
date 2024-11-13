@@ -100,8 +100,8 @@ class _VisitorSignupScreenState extends State<VisitorSignupScreen> {
                 const Text(
                   "Sign Up",
                   style: TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.w900,
+                    fontSize: 40,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 40),
@@ -224,8 +224,8 @@ class _VisitorSignupScreenState extends State<VisitorSignupScreen> {
                                   "Sign Up",
                                   style: TextStyle(
                                     color: whiteColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 22,
                                   ),
                                 ),
                               ),
