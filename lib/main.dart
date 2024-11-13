@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: "Local Service Provider App",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: "Outfit",
+        fontFamily: "Poppins",
       ),
       home: const OnboardingScreen(),
     );
