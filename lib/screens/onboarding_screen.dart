@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:local_service_provider_app/data/onboarding_data.dart';
-import 'package:local_service_provider_app/screens/auth/handyman/handyman_signup.dart';
-import 'package:local_service_provider_app/screens/auth/visitor/visitor_signup.dart';
+import 'package:local_service_provider_app/views/auth_views/handyman_signup.dart';
+import 'package:local_service_provider_app/views/auth_views/visitor_signup.dart';
 
 import 'package:local_service_provider_app/screens/onboarding/shared_onboarding_screen.dart';
 import 'package:local_service_provider_app/screens/onboarding/splash_screen.dart';

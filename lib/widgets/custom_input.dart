@@ -20,25 +20,28 @@ class ReusableInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final inputBorder = OutlineInputBorder(
-      borderSide: Divider.createBorderSide(context),
+      borderSide: const BorderSide(color: mainTextColor),
       borderRadius: BorderRadius.circular(22),
     );
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
+        labelText: labelText,
+        labelStyle: const TextStyle(
+          fontSize: 20,
+          color: mainTextColor,
+          fontWeight: FontWeight.w500,
+        ),
         border: inputBorder,
         focusedBorder: inputBorder,
         enabledBorder: inputBorder,
-        labelText: labelText,
-        labelStyle: const TextStyle(
-          color: mainTextColor,
-        ),
-        filled: true,
         prefixIcon: Icon(
           icon,
-          color: whiteColor,
+          color: mainTextColor,
           size: 20,
         ),
+        filled: true,
+        fillColor: Colors.white,
       ),
       obscureText: obscureText,
       validator: validator,

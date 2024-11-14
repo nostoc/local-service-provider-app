@@ -19,7 +19,7 @@ class ReusableButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      height: 50,
+      height: 60,
       decoration: BoxDecoration(
         color: buttonColor,
         border: Border.all(color: buttonTextColor),
@@ -38,6 +38,7 @@ class ReusableButton extends StatelessWidget {
           style: TextStyle(
             fontSize: 20,
             color: buttonTextColor,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

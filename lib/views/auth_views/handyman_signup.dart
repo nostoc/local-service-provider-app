@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:local_service_provider_app/screens/auth/visitor/visitor_signin.dart';
+import 'package:go_router/go_router.dart';
 import 'package:local_service_provider_app/screens/home/home_screen.dart';
 import 'package:local_service_provider_app/services/auth_service.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
+import 'package:local_service_provider_app/widgets/custom_input.dart';
+import 'package:local_service_provider_app/widgets/reusable_button.dart';
 
 class HandyManSignUpPage extends StatefulWidget {
   const HandyManSignUpPage({super.key});
@@ -110,29 +112,11 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
-                      TextFormField(
+                      ReusableInput(
                         controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          labelText: "Email",
-                          labelStyle: TextStyle(
-                            fontSize: 20,
-                            color: mainTextColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: mainTextColor),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(22),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: mainTextColor),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(22),
-                            ),
-                          ),
-                        ),
+                        labelText: "Email",
+                        icon: Icons.email,
+                        obscureText: false,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter an email';
@@ -144,29 +128,11 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
                         },
                       ),
                       const SizedBox(height: 20),
-                      TextFormField(
+                      ReusableInput(
                         controller: _passwordController,
+                        labelText: "Password",
+                        icon: Icons.lock,
                         obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: "Password",
-                          labelStyle: TextStyle(
-                            fontSize: 20,
-                            color: mainTextColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: mainTextColor),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(22),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: mainTextColor),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(22),
-                            ),
-                          ),
-                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a password';
@@ -177,29 +143,11 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
                         },
                       ),
                       const SizedBox(height: 20),
-                      TextFormField(
+                      ReusableInput(
                         controller: _confirmPasswordController,
+                        labelText: "Confirm Password",
+                        icon: Icons.lock,
                         obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: "Confirm Password",
-                          labelStyle: TextStyle(
-                            fontSize: 20,
-                            color: mainTextColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: mainTextColor),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(22),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: mainTextColor),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(22),
-                            ),
-                          ),
-                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please confirm your password';
@@ -212,23 +160,12 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
                       const SizedBox(height: 20),
                       _isLoading
                           ? const CircularProgressIndicator()
-                          : SizedBox(
+                          : ReusableButton(
+                              buttonText: "Sign Up",
+                              buttonColor: mainTextColor,
+                              buttonTextColor: whiteColor,
                               width: double.infinity,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: mainTextColor,
-                                  minimumSize: const Size.fromHeight(50),
-                                ),
-                                onPressed: _signUpUser,
-                                child: const Text(
-                                  "Sign Up",
-                                  style: TextStyle(
-                                    color: whiteColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                              ),
+                              onPressed: _signUpUser,
                             ),
                       const SizedBox(
                         height: 20,
@@ -251,12 +188,7 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const VisitorSignin(),
-                                ),
-                              );
+                              GoRouter.of(context).go('/handyman-signin');
                             },
                           ),
                         ],
