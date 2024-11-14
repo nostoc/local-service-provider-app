@@ -43,7 +43,7 @@ class _VisitorSignupScreenState extends State<VisitorSignupScreen> {
     }
 
     try {
-      await AuthService().signUpVisitor(email: email, password: password);
+      await AuthService().signUpUser(email: email, password: password);
 
       if (mounted) {
         Navigator.pushReplacement(

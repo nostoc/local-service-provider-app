@@ -147,7 +147,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const HandymanSignupScreen(),
+                                              const HandyManSignUpPage(),
                                         ),
                                       );
                                     },

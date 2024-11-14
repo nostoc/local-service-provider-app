@@ -3,7 +3,7 @@ import 'package:local_service_provider_app/exceptions/auth_exceptions.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  Future<void> signUpVisitor(
+  Future<void> signUpUser(
       {required String email, required String password}) async {
     try {
       await _auth.createUserWithEmailAndPassword(
@@ -18,7 +18,7 @@ class AuthService {
     }
   }
 
- Future<void> signInVisitor(
+ Future<void> signInUser(
       {required String email, required String password}) async {
     try {
       await _auth.signInWithEmailAndPassword(

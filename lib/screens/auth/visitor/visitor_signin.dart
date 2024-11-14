@@ -35,7 +35,7 @@ class _VisitorSigninState extends State<VisitorSignin> {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
 
-      await AuthService().signInVisitor(email: email, password: password);
+      await AuthService().signInUser(email: email, password: password);
 
       if (mounted) {
         Navigator.pushReplacement(
