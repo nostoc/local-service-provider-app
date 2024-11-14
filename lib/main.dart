@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:local_service_provider_app/screens/onboarding_screen.dart';
+import 'package:local_service_provider_app/utils/colors.dart';
+import 'package:local_service_provider_app/router/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,13 +14,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: "Local Service Provider App",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: "Outfit",
+        fontFamily: "Poppins",
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: whiteColor,
+            selectedItemColor: selectedIconColor,
+            unselectedItemColor: subTextColor),
+        snackBarTheme: const SnackBarThemeData(
+          backgroundColor: whiteColor,
+          contentTextStyle: TextStyle(color: blackColor, fontSize: 16),
+        ),
       ),
-      home: const OnboardingScreen(),
+      routerConfig: RouterClass().router,
     );
   }
 }

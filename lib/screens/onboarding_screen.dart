@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:local_service_provider_app/data/onboarding_data.dart';
-import 'package:local_service_provider_app/screens/auth/handyman/handyman_signup.dart';
-import 'package:local_service_provider_app/screens/auth/visitor/visitor_signup.dart';
+import 'package:local_service_provider_app/views/auth_views/handyman_signup.dart';
+import 'package:local_service_provider_app/views/auth_views/visitor_signup.dart';
 
 import 'package:local_service_provider_app/screens/onboarding/shared_onboarding_screen.dart';
 import 'package:local_service_provider_app/screens/onboarding/splash_screen.dart';
@@ -62,7 +62,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                 //page indicator
                 Container(
-                  alignment: const Alignment(0, 0.66),
+                  alignment: const Alignment(0, 0.6),
                   child: SmoothPageIndicator(
                     controller: _controller,
                     count: 4,
@@ -75,7 +75,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 //navigation buttons
 
                 Positioned(
-                  bottom: 15,
+                  bottom: 25,
                   left: 0,
                   right: 0,
                   child: Padding(
@@ -147,7 +147,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const HandymanSignupScreen(),
+                                              const HandyManSignUpPage(),
                                         ),
                                       );
                                     },

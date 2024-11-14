@@ -15,7 +15,7 @@ class OnboardingData {
     OnBoarding(
       title: "Quality Services at Your Fingertips",
       description: "Find and contact trusted professionals with ease",
-      imageUrl: "assets/images/Electrician-pana.png",
+      imageUrl: "assets/images/worker1.png",
     ),
   ];
 }

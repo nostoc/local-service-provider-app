@@ -1,24 +1,50 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:local_service_provider_app/exceptions/auth_exceptions.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  Future<void> signUpVisitor(
+  Future<void> signUpUser(
       {required String email, required String password}) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      //create the user in firebase auth
+      final userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      // Add the user to firestore with minimal initial data
+
+      final user = userCredential.user;
+      if (user != null) {
+        //print('User created successfully: ${user.uid}');
+        final userData = {
+          "handyManId": user.uid,
+          "handyManEmail": email,
+          "createdAt": Timestamp.fromDate(DateTime.now()),
+          "updatedAt": Timestamp.fromDate(DateTime.now()),
+          // Other fields will be filled in later, set empty for now
+          "handyManName": "",
+          "handyManPhone": "",
+          "handyManJobTitle": "",
+          "handyManImageUrl": "",
+          "handyManAddress": "",
+          "password": "",
+        };
+
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(user.uid)
+            .set(userData);
+      }
     } on FirebaseAuthException catch (e) {
-      //print('Error creating user: ${mapFirebaseAuthExceptionCode(e.code)}');
       throw Exception(mapFirebaseAuthExceptionCode(e.code));
     } catch (e) {
-      // print('Error creating user: $e');
+      throw Exception('An unexpected error occurred: $e');
     }
   }
 
- Future<void> signInVisitor(
+  Future<void> signInUser(
       {required String email, required String password}) async {
     try {
       await _auth.signInWithEmailAndPassword(
