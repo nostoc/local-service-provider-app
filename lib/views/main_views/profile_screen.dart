@@ -229,10 +229,20 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
                                   _selectedJobCategory = newValue!;
                                 });
                               },
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
+                                focusedBorder: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: mainTextColor)),
+                                fillColor: whiteColor,
+                                filled: true,
                                 labelText: "Job Title",
-                                border: OutlineInputBorder(),
-                                prefixIcon: Icon(Icons.work),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(22)),
+                                prefixIcon: const Icon(
+                                  Icons.work,
+                                  color: mainTextColor,
+                                  size: 20,
+                                ),
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
