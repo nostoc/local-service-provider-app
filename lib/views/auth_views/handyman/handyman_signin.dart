@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:local_service_provider_app/exceptions/auth_exceptions.dart';
-import 'package:local_service_provider_app/screens/home/home_screen.dart';
+import 'package:local_service_provider_app/services/exceptions/auth_exceptions.dart';
 import 'package:local_service_provider_app/services/auth_service.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
 import 'package:local_service_provider_app/widgets/custom_input.dart';
@@ -18,64 +17,38 @@ class HandyManSignIn extends StatefulWidget {
 class _HandyManSignInState extends State<HandyManSignIn> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   final _formKey = GlobalKey<FormState>();
-
   bool _isLoading = false;
 
   Future<void> _signInUser() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
 
-    setState(() {
-      _isLoading = true;
-    });
+    setState(() => _isLoading = true);
+
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
 
     try {
-      final email = _emailController.text.trim();
-      final password = _passwordController.text.trim();
-
       await AuthService().signInUser(email: email, password: password);
+      _showSnackbar("Success", "Signed in successfully");
 
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
-        );
+        GoRouter.of(context).go('/home');
       }
     } catch (e) {
-      String errorMessage;
-
+      String errorMessage = 'An unexpected error occurred.';
       if (e is FirebaseAuthException) {
-        // Handle FirebaseAuthException separately
         errorMessage = mapFirebaseAuthExceptionCode(e.code);
-      } else {
-        // Handle any other exceptions
-        errorMessage = 'An unexpected error occurred.';
       }
-      if (mounted) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Error'),
-            content: Text('Error signing in: $errorMessage'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-      }
+      _showSnackbar("Error", "Error signing in: $errorMessage");
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() => _isLoading = false);
     }
+  }
+
+  void _showSnackbar(String title, String message) {
+    final snackBar = SnackBar(content: Text("$title: $message"));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -97,10 +70,7 @@ class _HandyManSignInState extends State<HandyManSignIn> {
                 const SizedBox(height: 5),
                 const Text(
                   "Sign In",
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 40),
                 Form(
@@ -112,7 +82,6 @@ class _HandyManSignInState extends State<HandyManSignIn> {
                         controller: _emailController,
                         labelText: "Email",
                         icon: Icons.email,
-                        obscureText: false,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter an email';
@@ -122,6 +91,7 @@ class _HandyManSignInState extends State<HandyManSignIn> {
                           }
                           return null;
                         },
+                        obscureText: false,
                       ),
                       const SizedBox(height: 20),
                       ReusableInput(
@@ -133,7 +103,7 @@ class _HandyManSignInState extends State<HandyManSignIn> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a password';
                           } else if (value.length < 6) {
-                            return 'Password must be at least 6 characters long';
+                            return 'Password must be at least 6 characters';
                           }
                           return null;
                         },
@@ -142,15 +112,13 @@ class _HandyManSignInState extends State<HandyManSignIn> {
                       _isLoading
                           ? const CircularProgressIndicator()
                           : ReusableButton(
-                              buttonText: "Sign Up",
+                              buttonText: "Sign In",
                               buttonColor: mainTextColor,
                               buttonTextColor: whiteColor,
                               width: double.infinity,
                               onPressed: _signInUser,
                             ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -160,8 +128,9 @@ class _HandyManSignInState extends State<HandyManSignIn> {
                                 TextStyle(color: mainTextColor, fontSize: 20),
                           ),
                           TextButton(
-                            style: TextButton.styleFrom(
-                                backgroundColor: Colors.transparent),
+                            onPressed: () {
+                              GoRouter.of(context).push('/handyman-signup');
+                            },
                             child: const Text(
                               "Sign Up",
                               style: TextStyle(
@@ -170,9 +139,6 @@ class _HandyManSignInState extends State<HandyManSignIn> {
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            onPressed: () {
-                              GoRouter.of(context).push('/handyman-signup');
-                            },
                           ),
                         ],
                       ),

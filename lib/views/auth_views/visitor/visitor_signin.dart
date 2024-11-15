@@ -1,27 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:local_service_provider_app/views/auth_views/visitor_signin.dart';
-import 'package:local_service_provider_app/screens/home/home_screen.dart';
+import 'package:local_service_provider_app/services/exceptions/auth_exceptions.dart';
+import 'package:local_service_provider_app/views/auth_views/visitor/visitor_signup.dart';
+import 'package:local_service_provider_app/views/home/home_screen.dart';
 import 'package:local_service_provider_app/services/auth_service.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
 
-class HandyManSignUpPage extends StatefulWidget {
-  const HandyManSignUpPage({super.key});
+
+class VisitorSignin extends StatefulWidget {
+  const VisitorSignin({super.key});
 
   @override
-  State<HandyManSignUpPage> createState() => _HandyManSignUpPageState();
+  State<VisitorSignin> createState() => _VisitorSigninState();
 }
 
-class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
+class _VisitorSigninState extends State<VisitorSignin> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
 
-  Future<void> _signUpUser() async {
+  Future<void> _signInUser() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -30,20 +31,11 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
       _isLoading = true;
     });
 
-    final email = _emailController.text.trim();
-    final password = _passwordController.text.trim();
-    final confirmPassword = _confirmPasswordController.text.trim();
-
-    if (password != confirmPassword) {
-      _showDialog("Error", "Passwords do not match");
-      setState(() {
-        _isLoading = false;
-      });
-      return;
-    }
-
     try {
-      await AuthService().signUpUser(email: email, password: password);
+      final email = _emailController.text.trim();
+      final password = _passwordController.text.trim();
+
+      await AuthService().signInUser(email: email, password: password);
 
       if (mounted) {
         Navigator.pushReplacement(
@@ -53,31 +45,36 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
           ),
         );
       }
-    } catch (error) {
-      _showDialog("Error", "Error creating User: $error");
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
+    } catch (e) {
+      String errorMessage;
 
-  void _showDialog(String title, String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Ok"),
+      if (e is FirebaseAuthException) {
+        // Handle FirebaseAuthException separately
+        errorMessage = mapFirebaseAuthExceptionCode(e.code);
+      } else {
+        // Handle any other exceptions
+        errorMessage = 'An unexpected error occurred.';
+      }
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Error'),
+            content: Text('Error signing in: $errorMessage'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('OK'),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        );
+      }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -98,7 +95,7 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
                 ),
                 const SizedBox(height: 5),
                 const Text(
-                  "Sign Up",
+                  "Sign In",
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.w600,
@@ -177,39 +174,6 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
                         },
                       ),
                       const SizedBox(height: 20),
-                      TextFormField(
-                        controller: _confirmPasswordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: "Confirm Password",
-                          labelStyle: TextStyle(
-                            fontSize: 20,
-                            color: mainTextColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(color: mainTextColor),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(22),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: mainTextColor),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(22),
-                            ),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please confirm your password';
-                          } else if (value != _passwordController.text) {
-                            return 'Passwords do not match';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
                       _isLoading
                           ? const CircularProgressIndicator()
                           : SizedBox(
@@ -219,9 +183,9 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
                                   backgroundColor: mainTextColor,
                                   minimumSize: const Size.fromHeight(50),
                                 ),
-                                onPressed: _signUpUser,
+                                onPressed: _signInUser,
                                 child: const Text(
-                                  "Sign Up",
+                                  "Sign In",
                                   style: TextStyle(
                                     color: whiteColor,
                                     fontWeight: FontWeight.w500,
@@ -237,13 +201,13 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
-                            "Already have an account?",
+                            "Don't have an account?",
                             style:
                                 TextStyle(color: mainTextColor, fontSize: 20),
                           ),
                           TextButton(
                             child: const Text(
-                              "Sign In",
+                              "Sign Up",
                               style: TextStyle(
                                 color: mainTextColor,
                                 fontSize: 20,
@@ -254,7 +218,8 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const VisitorSignin(),
+                                  builder: (context) =>
+                                      const VisitorSignupScreen(),
                                 ),
                               );
                             },
