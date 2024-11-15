@@ -1,16 +1,17 @@
 import "package:go_router/go_router.dart";
 import "package:flutter/material.dart";
-import "package:local_service_provider_app/screens/home/home_screen.dart";
-import "package:local_service_provider_app/views/auth_views/handyman_signin.dart";
-import "package:local_service_provider_app/views/auth_views/handyman_signup.dart";
-import "package:local_service_provider_app/views/auth_views/visitor_signin.dart";
-import "package:local_service_provider_app/views/auth_views/visitor_signup.dart";
-import "package:local_service_provider_app/screens/onboarding/splash_screen.dart";
+
+import "package:local_service_provider_app/views/auth_views/handyman/handyman_signin.dart";
+import "package:local_service_provider_app/views/auth_views/handyman/handyman_signup.dart";
+import "package:local_service_provider_app/views/auth_views/visitor/visitor_signin.dart";
+import "package:local_service_provider_app/views/auth_views/visitor/visitor_signup.dart";
+import "package:local_service_provider_app/views/main_screen.dart";
+import "package:local_service_provider_app/views/onboarding/nav.dart";
 // Import your SplashScreen
 
 class RouterClass {
   final router = GoRouter(
-    initialLocation: "/handyman-signin", // Set SplashScreen as the start page
+    initialLocation: "/", // Set SplashScreen as the start page
     errorPageBuilder: (context, state) {
       return MaterialPage(
         child: Scaffold(
@@ -32,19 +33,27 @@ class RouterClass {
       );
     },
     routes: [
+      GoRoute(
+        path: "/",
+        name: "nav_layout",
+        builder: (context, state) {
+          return const LayoutScreen();
+        },
+      ),
+
       // Splash screen route
       GoRoute(
         name: "splash-screen",
         path: "/splash-screen",
         builder: (context, state) {
-          return const SplashScreen();
+          return const LayoutScreen();
         },
       ),
       GoRoute(
           path: "/home",
           name: "home",
           builder: (context, state) {
-            return const HomeScreen();
+            return const MainScreen();
           }),
       // Login page
       GoRoute(

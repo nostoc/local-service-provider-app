@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:local_service_provider_app/exceptions/auth_exceptions.dart';
+import 'package:local_service_provider_app/services/exceptions/auth_exceptions.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -56,6 +56,20 @@ class AuthService {
       throw Exception(errorMessage);
     } catch (error) {
       throw Exception('An unexpected error occurred: $error');
+    }
+  }
+
+  //sign out
+  // Sign out
+  //This methode will sign out the user and print a message to the console
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+      //print('Signed out');
+    } on FirebaseAuthException catch (e) {
+      throw Exception(mapFirebaseAuthExceptionCode(e.code));
+    } catch (e) {
+      throw Exception('Error signing out: $e');
     }
   }
 }

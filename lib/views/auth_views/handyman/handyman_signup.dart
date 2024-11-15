@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:local_service_provider_app/services/auth_service.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
+import 'package:local_service_provider_app/utils/functions.dart';
 import 'package:local_service_provider_app/widgets/custom_input.dart';
 import 'package:local_service_provider_app/widgets/reusable_button.dart';
 
@@ -20,7 +21,7 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
-  Future<void> _signUpUser() async {
+ Future<void> _signUpUser() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
@@ -29,29 +30,28 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
     final confirmPassword = _confirmPasswordController.text.trim();
 
     if (password != confirmPassword) {
-      _showSnackbar("Error", "Passwords do not match");
+      UtilFuctions().showSnackBar(context, "Passwords do not match");
       setState(() => _isLoading = false);
       return;
     }
 
     try {
       await AuthService().signUpUser(email: email, password: password);
-      _showSnackbar("Success", "User created successfully");
-
       if (mounted) {
+        UtilFuctions().showSnackBar(context, "Signed up successfully");
         GoRouter.of(context).go('/home');
       }
     } catch (error) {
-      _showSnackbar("Error", "Error creating User: $error");
+      if (mounted) {
+        UtilFuctions().showSnackBar(context, "Error signing up: $error");
+      }
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
-  void _showSnackbar(String title, String message) {
-    final snackBar = SnackBar(content: Text("$title: $message"));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
 
   @override
   Widget build(BuildContext context) {
