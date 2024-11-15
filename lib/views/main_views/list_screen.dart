@@ -17,9 +17,17 @@ class HandymenListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
-        title: Text("$category Handymen"),
-        backgroundColor: mainTextColor,
+        title: Text(
+          "${category}s",
+          style: const TextStyle(
+            color: mainTextColor,
+          ),
+        ),
+        backgroundColor: whiteColor,
+        iconTheme: const IconThemeData(
+            color: mainTextColor), // Adjust app bar icon color
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: fetchHandymenByCategory(category),
@@ -47,22 +55,57 @@ class HandymenListScreen extends StatelessWidget {
               final phone = handyman['handyManPhone'] ?? "N/A";
               final address = handyman['handyManAddress'] ?? "No Address";
               final imageUrl = handyman['handyManImageUrl'] ??
-                  'https://i.stack.imgur.com/l60Hf.png';
+                  'https://i.stack.imgur.com/l60Hf.png'; // Default image
 
               return Card(
-                elevation: 4.0,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(imageUrl),
+                color: whiteColor,
+                elevation: 8.0, // Slightly more pronounced shadow
+                margin: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0), // Inner padding
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 35, // Slightly smaller radius for balance
+                      backgroundImage: NetworkImage(imageUrl),
+                    ),
+                    title: Text(
+                      name,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold, // Bold for emphasis
+                        color: mainTextColor,
+                      ),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          phone,
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.grey, // Lighter color for phone
+                          ),
+                        ),
+                        const SizedBox(height: 4.0),
+                        Text(
+                          address,
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                    isThreeLine: true,
+                    contentPadding: EdgeInsets.zero, // Remove extra padding
+                    onTap: () {
+                      // TODO: Add more functionality on tap
+                    },
                   ),
-                  title: Text(name, style: const TextStyle(fontSize: 18.0)),
-                  subtitle: Text("📞 $phone\n📍 $address"),
-                  isThreeLine: true,
-                  onTap: () {
-                    // Optional: Add more functionality on tap
-                  },
                 ),
               );
             },

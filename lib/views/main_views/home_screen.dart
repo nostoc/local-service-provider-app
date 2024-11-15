@@ -59,8 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
+            crossAxisSpacing: 20.0,
+            mainAxisSpacing: 20.0,
           ),
           itemCount: jobCategories.length,
           itemBuilder: (context, index) {
@@ -76,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 );
               },
               child: Card(
+                borderOnForeground: true,
                 elevation: 4.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0),
