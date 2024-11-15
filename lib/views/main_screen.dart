@@ -15,7 +15,7 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 2;
   final List<Widget> _pages = const [
     HomeScreen(),
-    SearchScreen(),
+    SearchPage(),
     HandymanProfileScreen(),
   ];
 

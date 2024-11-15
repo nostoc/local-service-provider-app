@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "Poppins",
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-            backgroundColor: whiteColor,
-            selectedItemColor: mainTextColor,
-            unselectedItemColor: subTextColor),
+            backgroundColor: mainTextColor,
+            selectedItemColor: whiteColor,
+            unselectedItemColor: appBarColor),
         snackBarTheme: const SnackBarThemeData(
           backgroundColor: whiteColor,
           contentTextStyle: TextStyle(color: blackColor, fontSize: 16),

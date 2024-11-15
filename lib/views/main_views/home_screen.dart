@@ -24,7 +24,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("HandyConnect"),
+        title: const Center(
+          child: Text(
+            "Categories",
+            style: TextStyle(
+              color: whiteColor,
+              fontSize: 30,
+              fontWeight: FontWeight.w600,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
         backgroundColor: mainTextColor,
       ),
       body: Padding(
