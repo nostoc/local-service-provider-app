@@ -33,7 +33,7 @@ class AuthService {
         };
 
         await FirebaseFirestore.instance
-            .collection("users")
+            .collection("handymen")
             .doc(user.uid)
             .set(userData);
       }

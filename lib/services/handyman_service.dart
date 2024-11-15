@@ -11,7 +11,7 @@ class HandymanService {
   }) async {
     try {
       final userDocRef =
-          FirebaseFirestore.instance.collection('users').doc(handyManId);
+          FirebaseFirestore.instance.collection("handymen").doc(handyManId);
 
       // Update user document in Firestore with the new profile data
       await userDocRef.update({
