@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:local_service_provider_app/utils/colors.dart';
 import 'package:local_service_provider_app/utils/functions.dart';
 
 class SearchPage extends StatefulWidget {
@@ -55,7 +56,6 @@ class _SearchPageState extends State<SearchPage> {
     } catch (e) {
       if (mounted) {
         UtilFuctions().showSnackBar(context, "Error searching Handy Man ");
-        
       }
     } finally {
       setState(() => isLoading = false);
@@ -66,8 +66,17 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Search Handymen"),
-        backgroundColor: Colors.blue,
+        title: const Center(
+          child: Text(
+            "Search Handymen",
+            style: TextStyle(
+              color: whiteColor,
+              fontSize: 30,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        backgroundColor: mainTextColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -78,7 +87,22 @@ class _SearchPageState extends State<SearchPage> {
             TextField(
               controller: _searchController,
               decoration: InputDecoration(
+                fillColor: whiteColor,
+                filled: true,
                 labelText: 'Search by Category',
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: mainTextColor),
+                  borderRadius: BorderRadius.circular(22),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: mainTextColor),
+                  borderRadius: BorderRadius.circular(22),
+                ),
+                labelStyle: const TextStyle(
+                  fontSize: 18,
+                  color: mainTextColor,
+                  fontWeight: FontWeight.w500,
+                ),
                 hintText: 'Enter job category (e.g., Plumber)',
                 border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
@@ -105,8 +129,11 @@ class _SearchPageState extends State<SearchPage> {
                         setState(() => _searchController.text = category);
                       },
                       child: Chip(
-                        label: Text(category),
-                        backgroundColor: Colors.blue.shade100,
+                        label: Text(
+                          category,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        backgroundColor: whiteColor,
                       ),
                     ),
                   )
@@ -127,9 +154,25 @@ class _SearchPageState extends State<SearchPage> {
               onChanged: (value) {
                 setState(() => selectedLocation = value);
               },
-              decoration: const InputDecoration(
-                labelText: 'Filter by Location (optional)',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                focusedBorder:  OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(22),
+                  borderSide: const BorderSide(color: mainTextColor),
+                ),
+                labelStyle: const TextStyle(
+                  color: mainTextColor,
+                ),
+                fillColor: whiteColor,
+                filled: true,
+                labelText: "Location",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(22),
+                ),
+                prefixIcon: const Icon(
+                  Icons.location_on,
+                  color: mainTextColor,
+                  size: 20,
+                ),
               ),
             ),
             const SizedBox(height: 16),

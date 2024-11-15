@@ -147,7 +147,7 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
       appBar: AppBar(
           backgroundColor: mainTextColor,
           title: const Center(
-            child:  Text(
+            child: Text(
               "Your Profile",
               style: TextStyle(
                 color: whiteColor,
@@ -235,13 +235,21 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
                               });
                             },
                             decoration: InputDecoration(
-                              focusedBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: mainTextColor)),
+                              focusedBorder:  OutlineInputBorder(
+                                borderSide: const BorderSide(color: mainTextColor),
+                                borderRadius: BorderRadius.circular(22),
+                              ),
+                              labelStyle: const TextStyle(
+                                
+                                color: mainTextColor,
+                                
+                              ),
                               fillColor: whiteColor,
                               filled: true,
                               labelText: "Job Title",
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(22)),
+                                borderRadius: BorderRadius.circular(22),
+                              ),
                               prefixIcon: const Icon(
                                 Icons.work,
                                 color: mainTextColor,
