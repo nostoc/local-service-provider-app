@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
 import 'package:local_service_provider_app/utils/functions.dart';
+import 'package:local_service_provider_app/widgets/reusable_button.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -11,26 +12,44 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
   final List<String> jobCategories = [
-    'Mason',
+     'Mason',
     'Carpenter',
     'Plumber',
     'Electrician',
     'Painter',
     'Landscaper',
+    'Tile',
+    'Air Conditioning',
+    'Ceiling',
+    'Vehicle Repairing',
+    'Contractor',
+    'Gully Bowser',
+    'Architects',
+    'Solar Panel fixing',
+    'Curtains',
+    'Pest COntrol',
+    'Cleaners',
+    'Chair Weavers',
+    'Stones/Sand/Soil',
+    'CCTV',
+    'Movers',
+    'Rent Tools',
   ];
-  String? selectedLocation;
-  final List<String> locations = ['Colombo', 'Gampaha', 'Kandy', 'Galle'];
+  String? selectedCategory;
 
   List<Map<String, dynamic>> matchedHandymen = [];
   bool isLoading = false;
 
   Future<void> _searchHandymen() async {
-    final query = _searchController.text.trim();
-    if (query.isEmpty) {
+    final category = selectedCategory; // Use selectedCategory
+    final locationKeyword = _locationController.text.trim().toLowerCase();
+
+    // Ensure category is selected
+    if (category == null || category.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a category to search')),
+        const SnackBar(content: Text('Please select a category to search')),
       );
       return;
     }
@@ -38,16 +57,21 @@ class _SearchPageState extends State<SearchPage> {
     setState(() => isLoading = true);
 
     try {
+      // Start with the basic query for the selected category
       Query queryRef = FirebaseFirestore.instance
           .collection('handymen')
-          .where('handyManJobTitle', isEqualTo: query);
+          .where('handyManJobTitle', isEqualTo: category);
 
-      if (selectedLocation != null && selectedLocation!.isNotEmpty) {
-        queryRef =
-            queryRef.where('handyManAddress', isEqualTo: selectedLocation);
+      // Apply location filter if provided
+      if (locationKeyword.isNotEmpty) {
+        queryRef = queryRef.where(
+          'addressKeywords',
+          arrayContains: locationKeyword,
+        );
       }
 
       final querySnapshot = await queryRef.get();
+
       setState(() {
         matchedHandymen = querySnapshot.docs
             .map((doc) => doc.data() as Map<String, dynamic>)
@@ -55,7 +79,7 @@ class _SearchPageState extends State<SearchPage> {
       });
     } catch (e) {
       if (mounted) {
-        UtilFuctions().showSnackBar(context, "Error searching Handy Man ");
+        UtilFuctions().showSnackBar(context, "Error searching handymen: $e");
       }
     } finally {
       setState(() => isLoading = false);
@@ -83,13 +107,47 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Search Field with Auto-suggestion
+            // Category Dropdown
+            DropdownButtonFormField<String>(
+              value: selectedCategory,
+              items: jobCategories
+                  .map(
+                    (category) => DropdownMenuItem(
+                      value: category,
+                      child: Text(category),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                setState(() => selectedCategory = value);
+              },
+              decoration: InputDecoration(
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(22),
+                  borderSide: const BorderSide(color: mainTextColor),
+                ),
+                labelStyle: const TextStyle(color: mainTextColor),
+                fillColor: whiteColor,
+                filled: true,
+                labelText: "Category",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(22),
+                ),
+                prefixIcon: const Icon(
+                  Icons.work,
+                  color: mainTextColor,
+                  size: 20,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Location Text Field (Optional)
             TextField(
-              controller: _searchController,
+              controller: _locationController,
               decoration: InputDecoration(
                 fillColor: whiteColor,
                 filled: true,
-                labelText: 'Search by Category',
+                labelText: 'Location (Optional)',
                 focusedBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: mainTextColor),
                   borderRadius: BorderRadius.circular(22),
@@ -103,77 +161,22 @@ class _SearchPageState extends State<SearchPage> {
                   color: mainTextColor,
                   fontWeight: FontWeight.w500,
                 ),
-                hintText: 'Enter job category (e.g., Plumber)',
+                hintText: 'Enter location keyword (e.g., Colombo)',
                 border: const OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: _searchHandymen,
-                ),
-              ),
-              onChanged: (value) {
-                // Update auto-suggestion based on typed text
-                setState(() {});
-              },
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 8.0,
-              runSpacing: 8.0,
-              children: jobCategories
-                  .where((category) => category
-                      .toLowerCase()
-                      .contains(_searchController.text.toLowerCase()))
-                  .map(
-                    (category) => GestureDetector(
-                      onTap: () {
-                        setState(() => _searchController.text = category);
-                      },
-                      child: Chip(
-                        label: Text(
-                          category,
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                        backgroundColor: whiteColor,
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-            const SizedBox(height: 16),
-            // Location Dropdown
-            DropdownButtonFormField<String>(
-              value: selectedLocation,
-              items: locations
-                  .map(
-                    (location) => DropdownMenuItem(
-                      value: location,
-                      child: Text(location),
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                setState(() => selectedLocation = value);
-              },
-              decoration: InputDecoration(
-                focusedBorder:  OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(22),
-                  borderSide: const BorderSide(color: mainTextColor),
-                ),
-                labelStyle: const TextStyle(
-                  color: mainTextColor,
-                ),
-                fillColor: whiteColor,
-                filled: true,
-                labelText: "Location",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(22),
-                ),
                 prefixIcon: const Icon(
                   Icons.location_on,
                   color: mainTextColor,
                   size: 20,
                 ),
               ),
+            ),
+            const SizedBox(height: 16),
+            ReusableButton(
+              buttonText: "Search",
+              buttonColor: mainTextColor,
+              buttonTextColor: whiteColor,
+              width: double.infinity,
+              onPressed: _searchHandymen,
             ),
             const SizedBox(height: 16),
             // Search Results

@@ -18,6 +18,23 @@ class _HomeScreenState extends State<HomeScreen> {
     'Electrician',
     'Painter',
     'Landscaper',
+    'Tile',
+    'Air Conditioning',
+    'Ceiling',
+    'Vehicle Repairing',
+    'Contractor',
+    'Gully Bowser',
+    'Architects',
+    'Solar Panel fixing',
+    'Curtains',
+    'Pest COntrol',
+    'Cleaners',
+    'Chair Weavers',
+    'Stones/Sand/Soil',
+    'CCTV',
+    'Movers',
+    'Rent Tools',
+
   ];
 
   @override

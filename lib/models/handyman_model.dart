@@ -8,23 +8,26 @@ class HandyManModel {
   final String handyManJobTitle;
   final String handyManImageUrl;
   final String handyManAddress;
+  final List<String> addressKeywords; // Added for partial matching
   final DateTime createdAt;
   final DateTime updatedAt;
   final String password;
 
-  HandyManModel(
-      {required this.handyManId,
-      required this.handyManName,
-      required this.handyManEmail,
-      required this.handyManPhone,
-      required this.handyManJobTitle,
-      required this.handyManImageUrl,
-      required this.handyManAddress,
-      required this.createdAt,
-      required this.updatedAt,
-      required this.password});
+  HandyManModel({
+    required this.handyManId,
+    required this.handyManName,
+    required this.handyManEmail,
+    required this.handyManPhone,
+    required this.handyManJobTitle,
+    required this.handyManImageUrl,
+    required this.handyManAddress,
+    required this.addressKeywords, // Initialize this
+    required this.createdAt,
+    required this.updatedAt,
+    required this.password,
+  });
 
-  // convert a User instance to a map (to save in firestore)
+  // Convert a User instance to a map (to save in Firestore)
   Map<String, dynamic> toJson() {
     return {
       "handyManId": handyManId,
@@ -34,13 +37,14 @@ class HandyManModel {
       "handyManJobTitle": handyManJobTitle,
       "handyManImageUrl": handyManImageUrl,
       "handyManAddress": handyManAddress,
+      "addressKeywords": addressKeywords, // Save address keywords
       "createdAt": createdAt,
       "updatedAt": updatedAt,
       "password": password,
     };
   }
 
-  // convert a map to a User instance (to read from firestore)
+  // Convert a map to a User instance (to read from Firestore)
   factory HandyManModel.fromJson(Map<String, dynamic> json) {
     return HandyManModel(
       handyManId: json["handyManId"] ?? "",
@@ -50,6 +54,8 @@ class HandyManModel {
       handyManJobTitle: json["handyManJobTitle"] ?? "",
       handyManImageUrl: json["handyManImageUrl"] ?? "",
       handyManAddress: json["handyManAddress"] ?? "",
+      addressKeywords:
+          List<String>.from(json["addressKeywords"] ?? []), // Parse keywords
       createdAt: (json["createdAt"] as Timestamp).toDate(),
       updatedAt: (json["updatedAt"] as Timestamp).toDate(),
       password: json["password"] ?? "",

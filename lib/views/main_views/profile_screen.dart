@@ -29,14 +29,30 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
   File? _imageFile;
 
   final List<String> _jobCategories = [
-    'Mason',
+     'Mason',
     'Carpenter',
     'Plumber',
     'Electrician',
     'Painter',
     'Landscaper',
     'Tile',
-    'Vehicle Repais'
+    'Air Conditioning',
+    'Ceiling',
+    'Vehicle Repairing',
+    'Contractor',
+    'Gully Bowser',
+    'Architects',
+    'Solar Panel fixing',
+    'Curtains',
+    'Pest COntrol',
+    'Cleaners',
+    'Chair Weavers',
+    'Stones/Sand/Soil',
+    'CCTV',
+    'Movers',
+    'Rent Tools',
+
+
   ];
   String? _selectedJobCategory;
 
