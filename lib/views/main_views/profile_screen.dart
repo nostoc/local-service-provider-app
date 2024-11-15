@@ -28,6 +28,16 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
   bool _isLoading = false;
   File? _imageFile;
 
+  final List<String> _jobCategories = [
+    'Mason',
+    'Carpenter',
+    'Plumber',
+    'Electrician',
+    'Painter',
+    'Landscaper',
+  ];
+  String? _selectedJobCategory;
+
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -106,7 +116,7 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
         handyManId: user.uid,
         handyManName: _nameController.text.trim(),
         handyManPhone: _phoneController.text.trim(),
-        handyManJobTitle: _jobTitleController.text.trim(),
+        handyManJobTitle: _selectedJobCategory ?? '',
         handyManImageUrl: _imageUrl, // Add image upload logic later
         handyManAddress: _addressController.text.trim(),
       );
@@ -136,7 +146,7 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
-              child: Padding(
+                child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
@@ -206,14 +216,27 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
                               },
                             ),
                             const SizedBox(height: 30),
-                            ReusableInput(
-                              controller: _jobTitleController,
-                              labelText: "Job Title",
-                              icon: Icons.work,
-                              obscureText: false,
+                            DropdownButtonFormField<String>(
+                              value: _selectedJobCategory,
+                              items: _jobCategories.map((String category) {
+                                return DropdownMenuItem<String>(
+                                  value: category,
+                                  child: Text(category),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _selectedJobCategory = newValue!;
+                                });
+                              },
+                              decoration: const InputDecoration(
+                                labelText: "Job Title",
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.work),
+                              ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter your job title';
+                                  return 'Please select your job title';
                                 }
                                 return null;
                               },
@@ -245,7 +268,7 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
                     ],
                   ),
                 ),
-            ),
+              ),
       ),
     );
   }
