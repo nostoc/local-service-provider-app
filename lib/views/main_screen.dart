@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:local_service_provider_app/views/main_views/home_screen.dart';
 import 'package:local_service_provider_app/views/main_views/profile_screen.dart';
 import 'package:local_service_provider_app/views/main_views/search_screen.dart';
