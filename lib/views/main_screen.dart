@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:local_service_provider_app/views/main_views/home_screen.dart';
 import 'package:local_service_provider_app/views/main_views/profile_screen.dart';
 import 'package:local_service_provider_app/views/main_views/search_screen.dart';
@@ -11,10 +12,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 2;
+  int _currentIndex = 0;
   final List<Widget> _pages = const [
     HomeScreen(),
-    SearchScreen(),
+    SearchPage(),
     HandymanProfileScreen(),
   ];
 

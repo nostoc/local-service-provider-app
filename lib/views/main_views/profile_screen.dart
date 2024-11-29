@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:local_service_provider_app/services/storage_service.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
 import 'package:local_service_provider_app/utils/functions.dart';
+import 'package:local_service_provider_app/views/main_views/handyman_account.dart';
 import 'package:local_service_provider_app/widgets/custom_input.dart';
 import 'package:local_service_provider_app/widgets/reusable_button.dart';
 
@@ -27,6 +28,32 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
   String _imageUrl = ""; // Placeholder for image URL
   bool _isLoading = false;
   File? _imageFile;
+
+  final List<String> _jobCategories = [
+    'Mason',
+    'Carpenter',
+    'Plumber',
+    'Electrician',
+    'Painter',
+    'Landscaper',
+    'Tile',
+    'Air Conditioning',
+    'Ceiling',
+    'Vehicle Repairing',
+    'Contractor',
+    'Gully Bowser',
+    'Architects',
+    'Solar Panel fixing',
+    'Curtains',
+    'Pest COntrol',
+    'Cleaners',
+    'Chair Weavers',
+    'Stones/Sand/Soil',
+    'CCTV',
+    'Movers',
+    'Rent Tools',
+  ];
+  String? _selectedJobCategory;
 
   Future<void> _pickImage() async {
     final picker = ImagePicker();
@@ -106,7 +133,7 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
         handyManId: user.uid,
         handyManName: _nameController.text.trim(),
         handyManPhone: _phoneController.text.trim(),
-        handyManJobTitle: _jobTitleController.text.trim(),
+        handyManJobTitle: _selectedJobCategory ?? '',
         handyManImageUrl: _imageUrl, // Add image upload logic later
         handyManAddress: _addressController.text.trim(),
       );
@@ -123,6 +150,13 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
     }
   }
 
+  void _navigateToAccountDetails() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AccountDetailsScreen()),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -131,122 +165,159 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-              child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 30),
-                      const Text(
-                        "Your Profile",
-                        style: TextStyle(
-                          color: mainTextColor,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 60),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Stack(children: [
-                              CircleAvatar(
-                                radius: 64,
-                                backgroundImage: _imageFile != null
-                                    ? FileImage(_imageFile!)
-                                    : _imageUrl.isNotEmpty
-                                        ? NetworkImage(_imageUrl)
-                                        : const NetworkImage(
-                                                'https://i.stack.imgur.com/l60Hf.png')
-                                            as ImageProvider,
-                                backgroundColor: Colors.grey[200],
-                              ),
-                              Positioned(
-                                bottom: -10,
-                                right: -6,
-                                child: IconButton(
-                                  onPressed: _pickImage,
-                                  icon: const Icon(Icons.add_a_photo),
-                                ),
-                              ),
-                            ]),
-                            const SizedBox(height: 30),
-                            ReusableInput(
-                              controller: _nameController,
-                              labelText: "Name",
-                              icon: Icons.person,
-                              obscureText: false,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your name';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 30),
-                            ReusableInput(
-                              controller: _phoneController,
-                              labelText: "Phone",
-                              icon: Icons.phone,
-                              obscureText: false,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your phone number';
-                                }
-                                if (!RegExp(r'^\d+$').hasMatch(value)) {
-                                  return 'Please enter a valid phone number';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 30),
-                            ReusableInput(
-                              controller: _jobTitleController,
-                              labelText: "Job Title",
-                              icon: Icons.work,
-                              obscureText: false,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your job title';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 30),
-                            ReusableInput(
-                              controller: _addressController,
-                              labelText: "Address",
-                              icon: Icons.location_on,
-                              obscureText: false,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your address';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 100),
-                            ReusableButton(
-                              buttonText: "Save Profile",
-                              buttonColor: mainTextColor,
-                              buttonTextColor: whiteColor,
-                              width: double.infinity,
-                              onPressed: _saveUserProfile,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+    return Scaffold(
+      appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.more_vert),
+              onPressed: _navigateToAccountDetails, // Trigger navigation
             ),
-      ),
+          ],
+          backgroundColor: mainTextColor,
+          title: const Center(
+            child: Text(
+              "Your Profile",
+              style: TextStyle(
+                color: whiteColor,
+                fontSize: 30,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          )),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 30),
+                    const SizedBox(height: 60),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Stack(children: [
+                            CircleAvatar(
+                              radius: 64,
+                              backgroundImage: _imageFile != null
+                                  ? FileImage(_imageFile!)
+                                  : _imageUrl.isNotEmpty
+                                      ? NetworkImage(_imageUrl)
+                                      : const NetworkImage(
+                                              'https://i.stack.imgur.com/l60Hf.png')
+                                          as ImageProvider,
+                              backgroundColor: Colors.grey[200],
+                            ),
+                            Positioned(
+                              bottom: -10,
+                              right: -6,
+                              child: IconButton(
+                                onPressed: _pickImage,
+                                icon: const Icon(Icons.add_a_photo),
+                              ),
+                            ),
+                          ]),
+                          const SizedBox(height: 30),
+                          ReusableInput(
+                            controller: _nameController,
+                            labelText: "Name",
+                            icon: Icons.person,
+                            obscureText: false,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your name';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          ReusableInput(
+                            controller: _phoneController,
+                            labelText: "Phone",
+                            icon: Icons.phone,
+                            obscureText: false,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your phone number';
+                              }
+                              if (!RegExp(r'^\d+$').hasMatch(value)) {
+                                return 'Please enter a valid phone number';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          DropdownButtonFormField<String>(
+                            value: _selectedJobCategory,
+                            items: _jobCategories.map((String category) {
+                              return DropdownMenuItem<String>(
+                                value: category,
+                                child: Text(category),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedJobCategory = newValue!;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: mainTextColor),
+                                borderRadius: BorderRadius.circular(22),
+                              ),
+                              labelStyle: const TextStyle(
+                                color: mainTextColor,
+                              ),
+                              fillColor: whiteColor,
+                              filled: true,
+                              labelText: "Job Title",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(22),
+                              ),
+                              prefixIcon: const Icon(
+                                Icons.work,
+                                color: mainTextColor,
+                                size: 20,
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please select your job title';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          ReusableInput(
+                            controller: _addressController,
+                            labelText: "Address",
+                            icon: Icons.location_on,
+                            obscureText: false,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your address';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 100),
+                          ReusableButton(
+                            buttonText: "Save Profile",
+                            buttonColor: mainTextColor,
+                            buttonTextColor: whiteColor,
+                            width: double.infinity,
+                            onPressed: _saveUserProfile,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 }

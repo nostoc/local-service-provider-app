@@ -13,6 +13,11 @@ class HandymanService {
       final userDocRef =
           FirebaseFirestore.instance.collection("handymen").doc(handyManId);
 
+      // Generate address keywords for partial matching
+      final addressKeywords = handyManAddress
+          .toLowerCase()
+          .split(RegExp(r'[\s,/]+')); // Split into keywords
+
       // Update user document in Firestore with the new profile data
       await userDocRef.update({
         "handyManName": handyManName,
@@ -20,6 +25,7 @@ class HandymanService {
         "handyManJobTitle": handyManJobTitle,
         "handyManImageUrl": handyManImageUrl,
         "handyManAddress": handyManAddress,
+        "addressKeywords": addressKeywords, // Save keywords for search
         "updatedAt": Timestamp.fromDate(DateTime.now()), // Update timestamp
       });
     } catch (e) {

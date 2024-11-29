@@ -1,10 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:local_service_provider_app/views/main_views/list_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../../utils/colors.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final List<String> jobCategories = [
+    'Mason',
+    'Carpenter',
+    'Plumber',
+    'Electrician',
+    'Painter',
+    'Landscaper',
+    'Tile',
+    'Air Conditioning',
+    'Ceiling',
+    'Vehicle Repairing',
+    'Contractor',
+    'Gully Bowser',
+    'Architects',
+    'Solar Panel fixing',
+    'Curtains',
+    'Pest COntrol',
+    'Cleaners',
+    'Chair Weavers',
+    'Stones/Sand/Soil',
+    'CCTV',
+    'Movers',
+    'Rent Tools',
+
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Center(
+          child: Text(
+            "Categories",
+            style: TextStyle(
+              color: whiteColor,
+              fontSize: 30,
+              fontWeight: FontWeight.w600,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        backgroundColor: mainTextColor,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 20.0,
+            mainAxisSpacing: 20.0,
+          ),
+          itemCount: jobCategories.length,
+          itemBuilder: (context, index) {
+            final category = jobCategories[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        HandymenListScreen(category: category),
+                  ),
+                );
+              },
+              child: Card(
+                borderOnForeground: true,
+                elevation: 4.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: Column(
+                  children: [Image.asset(name),
+                    Text(
+                      category,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: mainTextColor,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
