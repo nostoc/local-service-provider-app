@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:local_service_provider_app/views/main_views/list_screen.dart';
-
 import '../../utils/colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,31 +10,31 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<String> jobCategories = [
-    'Mason',
-    'Carpenter',
-    'Plumber',
-    'Electrician',
-    'Painter',
-    'Landscaper',
-    'Tile',
-    'Air Conditioning',
-    'Ceiling',
-    'Vehicle Repairing',
-    'Contractor',
-    'Gully Bowser',
-    'Architects',
-    'Solar Panel fixing',
-    'Curtains',
-    'Pest COntrol',
-    'Cleaners',
-    'Chair Weavers',
-    'Stones/Sand/Soil',
-    'CCTV',
-    'Movers',
-    'Rent Tools',
-
-  ];
+  // Map of categories and their respective image paths
+  final Map<String, String> categoryImages = {
+    'Air Conditioning': 'assets/images/airconditioning.jpg',
+    'Architects': 'assets/images/architects.jpg',
+    'Carpenter': 'assets/images/carpenter1.jpg',
+    'Ceiling': 'assets/images/ceiling.jpg',
+    'Chair Weavers': 'assets/images/chairweavers.jpg',
+    'Cleaners': 'assets/images/cleaners.jpg',
+    'Contractor': 'assets/images/contractor.jpg',
+    'Curtains': 'assets/images/curtains.jpg',
+    'CCTV': 'assets/images/cctv.jpg',
+    'Electrician': 'assets/images/electrician.jpg',
+    'Gully Bowser': 'assets/images/gully-bowser.jpg',
+    'Landscaper': 'assets/images/landscaper.jpg',
+    'Mason': 'assets/images/mason.jpg',
+    'Movers': 'assets/images/movers.jpg',
+    'Painter': 'assets/images/painter.jpg',
+    'Pest COntrol': 'assets/images/pest-control.jpg',
+    'Plumber': 'assets/images/plumber.jpg',
+    'Rent Tools': 'assets/images/rent-tools.jpg',
+    'Solar Panel fixing': 'assets/images/solarpanel.jpg',
+    'Stones/Sand/Soil': 'assets/images/stones-soil-sand.jpg',
+    'Tile': 'assets/images/tile.jpg',
+    'Vehicle Repairing': 'assets/images/vehicle-repairing.jpg',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisSpacing: 20.0,
             mainAxisSpacing: 20.0,
           ),
-          itemCount: jobCategories.length,
+          itemCount: categoryImages.length,
           itemBuilder: (context, index) {
-            final category = jobCategories[index];
+            final category = categoryImages.keys.elementAt(index);
+            final imagePath = categoryImages[category];
             return GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -81,18 +81,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0),
                 ),
-                child: Column(
-                  children: [Image.asset(name),
-                    Text(
-                      category,
-                      style: const TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        color: mainTextColor,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                     const SizedBox(height: 16.0),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: Image.asset(
+                              imagePath!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                      Text(
+                        category,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                          color: mainTextColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

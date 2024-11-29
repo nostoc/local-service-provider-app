@@ -5,9 +5,9 @@ import "package:local_service_provider_app/views/auth_views/handyman/handyman_si
 import "package:local_service_provider_app/views/auth_views/handyman/handyman_signup.dart";
 import "package:local_service_provider_app/views/auth_views/visitor/visitor_signin.dart";
 import "package:local_service_provider_app/views/auth_views/visitor/visitor_signup.dart";
+import "package:local_service_provider_app/views/handyman/handy_man_profile_view.dart";
 import "package:local_service_provider_app/views/main_screen.dart";
 import "package:local_service_provider_app/views/onboarding/nav.dart";
-
 
 class RouterClass {
   final router = GoRouter(
@@ -85,6 +85,14 @@ class RouterClass {
           return const HandyManSignIn();
         },
       ),
+      GoRoute(
+        path: "/handyman-profile-view",
+        builder: (context, state) {
+          return const HandymanProfileView(
+            handymanId: '',
+          );
+        },
+      )
     ],
   );
 }
