@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:local_service_provider_app/services/storage_service.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
 import 'package:local_service_provider_app/utils/functions.dart';
+import 'package:local_service_provider_app/views/main_views/handyman_account.dart';
 import 'package:local_service_provider_app/widgets/custom_input.dart';
 import 'package:local_service_provider_app/widgets/reusable_button.dart';
 
@@ -29,7 +30,7 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
   File? _imageFile;
 
   final List<String> _jobCategories = [
-     'Mason',
+    'Mason',
     'Carpenter',
     'Plumber',
     'Electrician',
@@ -51,8 +52,6 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
     'CCTV',
     'Movers',
     'Rent Tools',
-
-
   ];
   String? _selectedJobCategory;
 
@@ -151,6 +150,13 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
     }
   }
 
+  void _navigateToAccountDetails() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AccountDetailsScreen()),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -161,6 +167,12 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.more_vert),
+              onPressed: _navigateToAccountDetails, // Trigger navigation
+            ),
+          ],
           backgroundColor: mainTextColor,
           title: const Center(
             child: Text(
@@ -251,14 +263,13 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
                               });
                             },
                             decoration: InputDecoration(
-                              focusedBorder:  OutlineInputBorder(
-                                borderSide: const BorderSide(color: mainTextColor),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: mainTextColor),
                                 borderRadius: BorderRadius.circular(22),
                               ),
                               labelStyle: const TextStyle(
-                                
                                 color: mainTextColor,
-                                
                               ),
                               fillColor: whiteColor,
                               filled: true,

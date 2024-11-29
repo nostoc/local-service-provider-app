@@ -7,7 +7,7 @@ import "package:local_service_provider_app/views/auth_views/visitor/visitor_sign
 import "package:local_service_provider_app/views/auth_views/visitor/visitor_signup.dart";
 import "package:local_service_provider_app/views/main_screen.dart";
 import "package:local_service_provider_app/views/onboarding/nav.dart";
-// Import your SplashScreen
+
 
 class RouterClass {
   final router = GoRouter(

@@ -81,16 +81,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0),
                 ),
-                child: Center(
-                  child: Text(
-                    category,
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                      color: mainTextColor,
+                child: Column(
+                  children: [Image.asset(name),
+                    Text(
+                      category,
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: mainTextColor,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
+                  ],
                 ),
               ),
             );
