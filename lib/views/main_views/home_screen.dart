@@ -12,28 +12,28 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // Map of categories and their respective image paths
   final Map<String, String> categoryImages = {
-    'Mason': 'assets/images/mason.jpg',
-    'Carpenter': 'assets/images/carpenter1.jpg',
-    'Plumber': 'assets/images/plumber.jpg',
-    'Electrician': 'assets/images/electrician.jpg',
-    'Painter': 'assets/images/painter.jpg',
-    'Landscaper': 'assets/images/landscaper.jpg',
-    'Tile': 'assets/images/tile.jpg',
     'Air Conditioning': 'assets/images/airconditioning.jpg',
-    'Ceiling': 'assets/images/ceiling.jpg',
-    'Vehicle Repairing': 'assets/images/vehicle-repairing.jpg',
-    'Contractor': 'assets/images/contractor.jpg',
-    'Gully Bowser': 'assets/images/gully-bowser.jpg',
     'Architects': 'assets/images/architects.jpg',
-    'Solar Panel fixing': 'assets/images/solarpanel.jpg',
-    'Curtains': 'assets/images/curtains.jpg',
-    'Pest COntrol': 'assets/images/pest-control.jpg',
-    'Cleaners': 'assets/images/cleaners.jpg',
+    'Carpenter': 'assets/images/carpenter1.jpg',
+    'Ceiling': 'assets/images/ceiling.jpg',
     'Chair Weavers': 'assets/images/chairweavers.jpg',
-    'Stones/Sand/Soil': 'assets/images/stones-soil-sand.jpg',
+    'Cleaners': 'assets/images/cleaners.jpg',
+    'Contractor': 'assets/images/contractor.jpg',
+    'Curtains': 'assets/images/curtains.jpg',
     'CCTV': 'assets/images/cctv.jpg',
+    'Electrician': 'assets/images/electrician.jpg',
+    'Gully Bowser': 'assets/images/gully-bowser.jpg',
+    'Landscaper': 'assets/images/landscaper.jpg',
+    'Mason': 'assets/images/mason.jpg',
     'Movers': 'assets/images/movers.jpg',
+    'Painter': 'assets/images/painter.jpg',
+    'Pest COntrol': 'assets/images/pest-control.jpg',
+    'Plumber': 'assets/images/plumber.jpg',
     'Rent Tools': 'assets/images/rent-tools.jpg',
+    'Solar Panel fixing': 'assets/images/solarpanel.jpg',
+    'Stones/Sand/Soil': 'assets/images/stones-soil-sand.jpg',
+    'Tile': 'assets/images/tile.jpg',
+    'Vehicle Repairing': 'assets/images/vehicle-repairing.jpg',
   };
 
   @override
@@ -81,28 +81,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          imagePath!,
-                          fit: BoxFit.cover,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                     const SizedBox(height: 16.0),
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: Image.asset(
+                              imagePath!,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      category,
-                      style: const TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        color: mainTextColor,
+                      Text(
+                        category,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                          color: mainTextColor,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             );

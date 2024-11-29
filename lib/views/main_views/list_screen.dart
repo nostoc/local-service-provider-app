@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
+import 'package:local_service_provider_app/views/handyman/handy_man_profile_view.dart';
 
 class HandymenListScreen extends StatelessWidget {
   final String category;
@@ -63,13 +64,13 @@ class HandymenListScreen extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 16.0),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                  borderRadius: BorderRadius.circular(12.0), 
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0), // Inner padding
+                  padding: const EdgeInsets.all(12.0), 
                   child: ListTile(
                     leading: CircleAvatar(
-                      radius: 35, // Slightly smaller radius for balance
+                      radius: 30, // Slightly smaller radius for balance
                       backgroundImage: NetworkImage(imageUrl),
                     ),
                     title: Text(
@@ -103,8 +104,16 @@ class HandymenListScreen extends StatelessWidget {
                     isThreeLine: true,
                     contentPadding: EdgeInsets.zero, // Remove extra padding
                     onTap: () {
-                      // TODO: Add more functionality on tap
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HandymanProfileView(
+                            handymanId: handyman.id, // Pass the document ID
+                          ),
+                        ),
+                      );
                     },
+
                   ),
                 ),
               );
