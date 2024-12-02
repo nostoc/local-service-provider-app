@@ -8,7 +8,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:local_service_provider_app/services/storage_service.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
 import 'package:local_service_provider_app/utils/functions.dart';
-import 'package:local_service_provider_app/views/main_views/handyman_account.dart';
 import 'package:local_service_provider_app/widgets/custom_input.dart';
 import 'package:local_service_provider_app/widgets/reusable_button.dart';
 
@@ -23,35 +22,34 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _jobTitleController = TextEditingController();
   final _addressController = TextEditingController();
   String _imageUrl = ""; // Placeholder for image URL
   bool _isLoading = false;
   File? _imageFile;
 
   final List<String> _jobCategories = [
-    'Mason',
-    'Carpenter',
-    'Plumber',
-    'Electrician',
-    'Painter',
-    'Landscaper',
-    'Tile',
-    'Air Conditioning',
-    'Ceiling',
-    'Vehicle Repairing',
-    'Contractor',
-    'Gully Bowser',
-    'Architects',
-    'Solar Panel fixing',
-    'Curtains',
-    'Pest COntrol',
-    'Cleaners',
-    'Chair Weavers',
-    'Stones/Sand/Soil',
-    'CCTV',
-    'Movers',
-    'Rent Tools',
+    "Air Conditioning",
+    "Architect",
+    "Carpenter",
+    "CCTV",
+    "Ceiling",
+    "Chair Weavers",
+    "Cleaners",
+    "Contractor",
+    "Curtains",
+    "Electrician",
+    "Gully Bowser",
+    "Landscaper",
+    "Mason",
+    "Movers",
+    "Painter",
+    "Pest Control",
+    "Plumber",
+    "Rent Tools",
+    "Solar Panel Fixing",
+    "Stones/Sand/Soil",
+    "Tile",
+    "Vehicle Repairing"
   ];
   String? _selectedJobCategory;
 
@@ -86,7 +84,7 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
     }
   }
 
-  Future<void> _loadUserProfile() async {
+Future<void> _loadUserProfile() async {
     setState(() => _isLoading = true);
 
     final user = FirebaseAuth.instance.currentUser;
@@ -104,9 +102,10 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
           setState(() {
             _nameController.text = data['handyManName'] ?? '';
             _phoneController.text = data['handyManPhone'] ?? '';
-            _jobTitleController.text = data['handyManJobTitle'] ?? '';
             _addressController.text = data['handyManAddress'] ?? '';
             _imageUrl = data['handyManImageUrl'] ?? '';
+            _selectedJobCategory =
+                data['handyManJobTitle']; // Correctly fetch Job Title
           });
         }
       }
@@ -118,6 +117,7 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
       setState(() => _isLoading = false);
     }
   }
+
 
   Future<void> _saveUserProfile() async {
     if (!_formKey.currentState!.validate()) return;
@@ -150,12 +150,7 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
     }
   }
 
-  void _navigateToAccountDetails() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AccountDetailsScreen()),
-    );
-  }
+ 
 
   @override
   void initState() {
@@ -166,13 +161,9 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.more_vert),
-              onPressed: _navigateToAccountDetails, // Trigger navigation
-            ),
-          ],
+          
           backgroundColor: mainTextColor,
           title: const Center(
             child: Text(
@@ -269,8 +260,9 @@ class _HandymanProfileScreenState extends State<HandymanProfileScreen> {
                                 borderRadius: BorderRadius.circular(22),
                               ),
                               labelStyle: const TextStyle(
-                                color: mainTextColor,
-                              ),
+                                  color: mainTextColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500),
                               fillColor: whiteColor,
                               filled: true,
                               labelText: "Job Title",

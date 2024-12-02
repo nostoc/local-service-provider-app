@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(
-          child: Text(
+          child:  Text(
             "Categories",
             style: TextStyle(
               color: whiteColor,

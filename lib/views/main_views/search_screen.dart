@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
 import 'package:local_service_provider_app/utils/functions.dart';
+import 'package:local_service_provider_app/views/handyman/handy_man_profile_view.dart';
 import 'package:local_service_provider_app/widgets/reusable_button.dart';
 
 class SearchPage extends StatefulWidget {
@@ -14,28 +15,28 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _locationController = TextEditingController();
   final List<String> jobCategories = [
-     'Mason',
-    'Carpenter',
-    'Plumber',
-    'Electrician',
-    'Painter',
-    'Landscaper',
-    'Tile',
-    'Air Conditioning',
-    'Ceiling',
-    'Vehicle Repairing',
-    'Contractor',
-    'Gully Bowser',
-    'Architects',
-    'Solar Panel fixing',
-    'Curtains',
-    'Pest COntrol',
-    'Cleaners',
-    'Chair Weavers',
-    'Stones/Sand/Soil',
-    'CCTV',
-    'Movers',
-    'Rent Tools',
+    "Air Conditioning",
+    "Architect",
+    "Carpenter",
+    "CCTV",
+    "Ceiling",
+    "Chair Weavers",
+    "Cleaners",
+    "Contractor",
+    "Curtains",
+    "Electrician",
+    "Gully Bowser",
+    "Landscaper",
+    "Mason",
+    "Movers",
+    "Painter",
+    "Pest Control",
+    "Plumber",
+    "Rent Tools",
+    "Solar Panel Fixing",
+    "Stones/Sand/Soil",
+    "Tile",
+    "Vehicle Repairing"
   ];
   String? selectedCategory;
 
@@ -73,9 +74,11 @@ class _SearchPageState extends State<SearchPage> {
       final querySnapshot = await queryRef.get();
 
       setState(() {
-        matchedHandymen = querySnapshot.docs
-            .map((doc) => doc.data() as Map<String, dynamic>)
-            .toList();
+        matchedHandymen = querySnapshot.docs.map((doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          data['handyManId'] = doc.id; // Add the document ID to the data
+          return data;
+        }).toList();
       });
     } catch (e) {
       if (mounted) {
@@ -89,9 +92,10 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
         title: const Center(
-          child: Text(
+          child:  Text(
             "Search Handymen",
             style: TextStyle(
               color: whiteColor,
@@ -192,21 +196,66 @@ class _SearchPageState extends State<SearchPage> {
                           itemBuilder: (context, index) {
                             final handyman = matchedHandymen[index];
                             return Card(
+                              color: whiteColor,
+                              elevation: 8.0,
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 16.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
                               child: ListTile(
-                                leading: handyman['handyManImageUrl'] != null
-                                    ? CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                          handyman['handyManImageUrl'],
-                                        ),
-                                      )
-                                    : const CircleAvatar(
-                                        child: Icon(Icons.person),
+                                leading: CircleAvatar(
+                                  radius:
+                                      30, // Slightly smaller radius for balance
+                                  backgroundImage: NetworkImage(
+                                    handyman['handyManImageUrl'],
+                                  ),
+                                ),
+                                title: Text(
+                                  handyman['handyManName'] ?? 'No Name',
+                                  style: const TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight:
+                                        FontWeight.bold, // Bold for emphasis
+                                    color: mainTextColor,
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      handyman['handyManPhone'] ?? 'No Phone',
+                                      style: const TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors
+                                            .grey, // Lighter color for phone
                                       ),
-                                title:
-                                    Text(handyman['handyManName'] ?? 'No Name'),
-                                subtitle: Text(
-                                    '${handyman['handyManJobTitle'] ?? 'No Job Title'}\n${handyman['handyManAddress'] ?? 'No Address'}'),
+                                    ),
+                                    const SizedBox(height: 4.0),
+                                    Text(
+                                      handyman['handyManAddress'] ??
+                                          'No Address',
+                                      style: const TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                                 isThreeLine: true,
+                                contentPadding:
+                                    EdgeInsets.zero, // Remove extra padding
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HandymanProfileView(
+                                        handymanId: handyman[
+                                            'handyManId'], // Pass the document ID
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             );
                           },

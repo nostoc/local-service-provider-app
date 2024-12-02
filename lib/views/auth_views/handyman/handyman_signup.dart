@@ -36,7 +36,8 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
     }
 
     try {
-      await AuthService().signUpUser(email: email, password: password);
+      // Use the new signUpHandyMan method
+      await AuthService().signUpHandyMan(email: email, password: password);
       if (mounted) {
         UtilFuctions().showSnackBar(context, "Signed up successfully");
         GoRouter.of(context).go('/home');
@@ -51,7 +52,6 @@ class _HandyManSignUpPageState extends State<HandyManSignUpPage> {
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

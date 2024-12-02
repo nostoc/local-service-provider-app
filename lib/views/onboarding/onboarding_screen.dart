@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:local_service_provider_app/data/onboarding_data.dart';
 import 'package:local_service_provider_app/views/auth_views/handyman/handyman_signup.dart';
+import 'package:local_service_provider_app/views/auth_views/splash_screen.dart';
 import 'package:local_service_provider_app/views/auth_views/visitor/visitor_signup.dart';
-
 import 'package:local_service_provider_app/widgets/shared_onboarding_screen.dart';
-import 'package:local_service_provider_app/views/onboarding/nav.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
 import 'package:local_service_provider_app/widgets/custom_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -38,7 +37,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     });
                   },
                   children: [
-                    const LayoutScreen(),
+                    const SplashScreen(),
                     SharedOnboardingScreen(
                       title: OnboardingData.onBoardingDataList[0].title,
                       description:

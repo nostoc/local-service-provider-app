@@ -1,41 +1,82 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
+
 import 'package:local_service_provider_app/services/exceptions/auth_exceptions.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  Future<void> signUpUser(
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Hash password method
+  String _hashPassword(String password) {
+    // Using SHA-256 for password hashing
+    final bytes = utf8.encode(password);
+    final hashedPassword = sha256.convert(bytes);
+    return hashedPassword.toString();
+  }
+
+  Future<void> signUpHandyMan(
       {required String email, required String password}) async {
     try {
-      //create the user in firebase auth
+      // Create user in Firebase Auth
       final userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // Add the user to firestore with minimal initial data
-
       final user = userCredential.user;
       if (user != null) {
-        //print('User created successfully: ${user.uid}');
+        // Hash the password before storing
+        final hashedPassword = _hashPassword(password);
+
         final userData = {
           "handyManId": user.uid,
           "handyManEmail": email,
+          "hashedPassword": hashedPassword, // Store hashed password
           "createdAt": Timestamp.fromDate(DateTime.now()),
           "updatedAt": Timestamp.fromDate(DateTime.now()),
-          // Other fields will be filled in later, set empty for now
           "handyManName": "",
           "handyManPhone": "",
           "handyManJobTitle": "",
           "handyManImageUrl": "",
           "handyManAddress": "",
-          "password": "",
         };
 
-        await FirebaseFirestore.instance
-            .collection("handymen")
-            .doc(user.uid)
-            .set(userData);
+        await _firestore.collection("handymen").doc(user.uid).set(userData);
+      }
+    } on FirebaseAuthException catch (e) {
+      throw Exception(mapFirebaseAuthExceptionCode(e.code));
+    } catch (e) {
+      throw Exception('An unexpected error occurred: $e');
+    }
+  }
+
+  Future<void> signUpVisitor(
+      {required String email, required String password}) async {
+    try {
+      // Create user in Firebase Auth
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = userCredential.user;
+      if (user != null) {
+        // Hash the password before storing
+        final hashedPassword = _hashPassword(password);
+
+        final userData = {
+          "visitorId": user.uid,
+          "visitorEmail": email,
+          "hashedPassword": hashedPassword, // Store hashed password
+          "createdAt": Timestamp.fromDate(DateTime.now()),
+          "updatedAt": Timestamp.fromDate(DateTime.now()),
+          
+        };
+
+        await _firestore.collection("visitors").doc(user.uid).set(userData);
       }
     } on FirebaseAuthException catch (e) {
       throw Exception(mapFirebaseAuthExceptionCode(e.code));
@@ -59,13 +100,9 @@ class AuthService {
     }
   }
 
-  //sign out
-  // Sign out
-  //This methode will sign out the user and print a message to the console
   Future<void> signOut() async {
     try {
       await _auth.signOut();
-      //print('Signed out');
     } on FirebaseAuthException catch (e) {
       throw Exception(mapFirebaseAuthExceptionCode(e.code));
     } catch (e) {
