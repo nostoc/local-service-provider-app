@@ -12,7 +12,7 @@ import "package:local_service_provider_app/views/onboarding/onboarding_screen.da
 
 class RouterClass {
   final router = GoRouter(
-    initialLocation: "/splash-screen", // Set SplashScreen as the start page
+    initialLocation: "/", // Set SplashScreen as the start page
     errorPageBuilder: (context, state) {
       return MaterialPage(
         child: Scaffold(

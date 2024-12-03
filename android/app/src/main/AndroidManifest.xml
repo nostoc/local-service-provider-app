@@ -2,7 +2,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
-        android:label="local_service_provider_app"
+        android:label="handy man"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

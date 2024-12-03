@@ -5,7 +5,6 @@ import 'package:local_service_provider_app/views/main_views/search_screen.dart';
 
 class MainScreen extends StatefulWidget {
   final bool isHandyman;
-
   const MainScreen({super.key, required this.isHandyman});
 
   @override
@@ -16,21 +15,16 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   List<Widget> get _pages {
-    List<Widget> basePages = [
+    return [
       const HomeScreen(),
       const SearchPage(),
+      // Only add profile page if isHandyman is true
+      if (widget.isHandyman) const HandymanProfileScreen(),
     ];
-
-    // Add handyman profile page only if user is a handyman
-    if (widget.isHandyman) {
-      basePages.add(const HandymanProfileScreen());
-    }
-
-    return basePages;
   }
 
   List<BottomNavigationBarItem> get _bottomNavItems {
-    List<BottomNavigationBarItem> baseItems = [
+    return [
       const BottomNavigationBarItem(
         icon: Icon(Icons.home),
         label: "Home",
@@ -39,19 +33,13 @@ class _MainScreenState extends State<MainScreen> {
         icon: Icon(Icons.search),
         label: "Search",
       ),
-    ];
-
-    // Add profile nav item only if user is a handyman
-    if (widget.isHandyman) {
-      baseItems.add(
+      // Only add profile nav item if isHandyman is true
+      if (widget.isHandyman)
         const BottomNavigationBarItem(
           icon: Icon(Icons.account_circle),
           label: "Profile",
         ),
-      );
-    }
-
-    return baseItems;
+    ];
   }
 
   void _onIconTap(int index) {
@@ -66,9 +54,11 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: _bottomNavItems,
         currentIndex: _currentIndex,
+        // Adjust type to fixed to prevent shifting
+        type: BottomNavigationBarType.fixed,
         onTap: _onIconTap,
       ),
-      body: _pages[_currentIndex],
+      body: _pages[_currentIndex], // Note the correction here
     );
   }
 }
