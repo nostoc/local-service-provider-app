@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:local_service_provider_app/views/auth_views/visitor/visitor_signin.dart';
-import 'package:local_service_provider_app/views/home/home_screen.dart';
 import 'package:local_service_provider_app/services/auth_service.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
+import 'package:local_service_provider_app/views/main_screen.dart';
 
 class VisitorSignupScreen extends StatefulWidget {
   const VisitorSignupScreen({super.key});
@@ -43,13 +43,14 @@ class _VisitorSignupScreenState extends State<VisitorSignupScreen> {
     }
 
     try {
-      await AuthService().signUpUser(email: email, password: password);
+      // Use the new signUpVisitor method
+      await AuthService().signUpVisitor(email: email, password: password);
 
       if (mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
+            builder: (context) => const MainScreen(isHandyman: false,),
           ),
         );
       }

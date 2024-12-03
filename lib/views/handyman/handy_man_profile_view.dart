@@ -15,22 +15,44 @@ class HandymanProfileView extends StatelessWidget {
         .get();
   }
 
-  Future<void> _makePhoneCall(String phone) async {
-    if (phone.isEmpty || phone == "N/A") {
-      debugPrint("Invalid phone number: $phone");
-      return;
+  Future<void> _makePhoneCall(BuildContext context, String phone) async {
+    // Sanitize phone number (remove spaces, brackets, dashes)
+    String cleanPhone = phone.replaceAll(RegExp(r'[^\d+]'), '');
+
+    // Ensure the phone number starts with a valid prefix
+    if (!cleanPhone.startsWith('+') && !cleanPhone.startsWith('0')) {
+      cleanPhone = '+254$cleanPhone'; // Assume Kenyan number if no prefix
     }
-    final Uri callUri = Uri(scheme: 'tel', path: phone);
-    if (await canLaunchUrl(callUri)) {
-      await launchUrl(callUri);
-    } else {
-      debugPrint("Could not launch $callUri");
+
+    final Uri callUri = Uri.parse('tel:$cleanPhone');
+
+    try {
+      if (await canLaunchUrl(callUri)) {
+        await launchUrl(callUri);
+      } else {
+        // Show a user-friendly error
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unable to make a call to $cleanPhone'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Phone call launch error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('An error occurred: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
         title: const Text(
           "Handyman Profile",
@@ -38,6 +60,7 @@ class HandymanProfileView extends StatelessWidget {
         ),
         backgroundColor: whiteColor,
         iconTheme: const IconThemeData(color: mainTextColor),
+        elevation: 0,
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future: fetchHandymanProfile(handymanId),
@@ -58,6 +81,7 @@ class HandymanProfileView extends StatelessWidget {
           final data = snapshot.data!.data() as Map<String, dynamic>;
           final name = data['handyManName'] ?? "Unknown";
           final phone = data['handyManPhone'] ?? "N/A";
+          final email = data['handyManEmail'] ?? "N/A";
           final address = data['handyManAddress'] ?? "No Address";
           final jobTitle = data['handyManJobTitle'] ?? "No Job Title";
           final imageUrl = data['handyManImageUrl'] ??
@@ -65,90 +89,85 @@ class HandymanProfileView extends StatelessWidget {
 
           return SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 40.0),
-                  CircleAvatar(
-                    radius: 100,
-                    backgroundImage: NetworkImage(imageUrl),
-                    backgroundColor: Colors.grey[200],
-                  ),
-                  const SizedBox(height: 16.0),
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
-                      color: mainTextColor,
+              padding: const EdgeInsets.all(24.0),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 32.0),
+                    CircleAvatar(
+                      radius: 80,
+                      backgroundImage: NetworkImage(imageUrl),
+                      backgroundColor: Colors.grey[200],
                     ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    jobTitle,
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.grey,
+                    const SizedBox(height: 16.0),
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: mainTextColor,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Icon(Icons.phone, color: mainTextColor),
-                      const SizedBox(width: 8.0),
-                      Text(
-                        phone,
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          color: mainTextColor,
+                    const SizedBox(height: 8.0),
+                    Text(
+                      jobTitle,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    const SizedBox(height: 60.0),
+                    _buildContactInfo(Icons.phone, phone),
+                    const SizedBox(height: 12.0),
+                    _buildContactInfo(Icons.email, email),
+                    const SizedBox(height: 12.0),
+                    _buildContactInfo(Icons.location_on, address),
+                    const SizedBox(height: 60.0),
+                    ElevatedButton.icon(
+                      onPressed: () => _makePhoneCall(context, phone),
+                      icon: const Icon(Icons.call),
+                      label: Text("Call $name"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: mainTextColor,
+                        foregroundColor: whiteColor,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 16.0,
+                          horizontal: 32.0,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 8.0),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(Icons.location_on, color: mainTextColor),
-                      const SizedBox(width: 8.0),
-                      Expanded(
-                        child: Text(
-                          address,
-                          style: const TextStyle(
-                            fontSize: 16.0,
-                            color: mainTextColor,
-                          ),
-                          maxLines: 5,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32.0),
-                  ElevatedButton.icon(
-                    onPressed: () => _makePhoneCall(phone),
-                    icon: const Icon(Icons.call),
-                    label: Text("Call $name"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: mainTextColor,
-                      foregroundColor: whiteColor,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 12.0,
-                        horizontal: 24.0,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
         },
       ),
+    );
+  }
+
+  Widget _buildContactInfo(IconData icon, String info) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: mainTextColor, size: 18),
+        const SizedBox(width: 12.0),
+        Expanded(
+          child: Text(
+            info,
+            style: const TextStyle(
+              fontSize: 16.0,
+              color: mainTextColor,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -8,6 +8,7 @@ import "package:local_service_provider_app/views/auth_views/visitor/visitor_sign
 import "package:local_service_provider_app/views/handyman/handy_man_profile_view.dart";
 import "package:local_service_provider_app/views/main_screen.dart";
 import "package:local_service_provider_app/views/onboarding/nav.dart";
+import "package:local_service_provider_app/views/onboarding/onboarding_screen.dart";
 
 class RouterClass {
   final router = GoRouter(
@@ -46,14 +47,14 @@ class RouterClass {
         name: "splash-screen",
         path: "/splash-screen",
         builder: (context, state) {
-          return const LayoutScreen();
+          return const OnboardingScreen();
         },
       ),
       GoRoute(
           path: "/home",
           name: "home",
           builder: (context, state) {
-            return const MainScreen();
+            return const MainScreen(isHandyman: true);
           }),
       // Login page
       GoRoute(

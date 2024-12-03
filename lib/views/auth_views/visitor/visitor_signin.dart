@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:local_service_provider_app/services/exceptions/auth_exceptions.dart';
 import 'package:local_service_provider_app/views/auth_views/visitor/visitor_signup.dart';
-import 'package:local_service_provider_app/views/home/home_screen.dart';
 import 'package:local_service_provider_app/services/auth_service.dart';
 import 'package:local_service_provider_app/utils/colors.dart';
+import 'package:local_service_provider_app/views/main_screen.dart';
 
 
 class VisitorSignin extends StatefulWidget {
@@ -41,7 +41,7 @@ class _VisitorSigninState extends State<VisitorSignin> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
+            builder: (context) => const MainScreen(isHandyman: false,),
           ),
         );
       }
